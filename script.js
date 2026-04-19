@@ -1,40 +1,51 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     const gallery = document.getElementById('gallery');
-    const totalPhotos = 94;
+    let currentIndex = 1;
 
-    // 1. DYNAMICALLY GENERATE THE GALLERY
-    for (let i = 1; i <= totalPhotos; i++) {
-        // Create the figure container
-        const figure = document.createElement('figure');
-        figure.className = 'photo-card';
+    // 1. DYNAMICALLY GENERATE THE GALLERY (Auto-Detecting Images)
+    function loadNextImage() {
+        // Create an image object in memory to test if the file exists
+        const testImg = new Image();
+        testImg.src = `images/photo (${currentIndex}).jpg`;
 
-        // Add layout variety: Every 5th photo is wide, every 7th is tall
-        if (i % 5 === 0) figure.classList.add('wide');
-        if (i % 7 === 0) figure.classList.add('tall');
+        // If the image loads successfully, add it to the page
+        testImg.onload = () => {
+            const figure = document.createElement('figure');
+            figure.className = 'photo-card';
 
-        // Create the image element
-        const img = document.createElement('img');
-        img.src = `images/photo (${i}).jpg`;
-        img.alt = `Suthan Theiven Photography - Capture ${i}`;
+            if (currentIndex % 5 === 0) figure.classList.add('wide');
+            if (currentIndex % 7 === 0) figure.classList.add('tall');
 
-        // CRITICAL: Native lazy loading so the page loads instantly
-        img.loading = 'lazy';
+            const img = document.createElement('img');
+            img.src = testImg.src;
+            img.alt = `Suthan Theiven Photography - Capture ${currentIndex}`;
+            img.loading = 'lazy';
 
-        // Assemble and inject into the page
-        figure.appendChild(img);
-        gallery.appendChild(figure);
+            figure.appendChild(img);
+            gallery.appendChild(figure);
+
+            // Increment the counter and try to load the NEXT image
+            currentIndex++;
+            loadNextImage();
+        };
+
+        // If the image fails to load (meaning the file doesn't exist), stop trying.
+        testImg.onerror = () => {
+            console.log(`Finished checking. Gallery loaded with ${currentIndex - 1} photos.`);
+        };
     }
 
+    // Kick off the loading process
+    loadNextImage();
 
-    // 2. LIGHTBOX LOGIC (Using Event Delegation for Performance)
+
+    // 2. LIGHTBOX LOGIC (Unchanged)
     const modal = document.getElementById("lightbox");
     const modalImg = document.getElementById("lightbox-img");
     const closeBtn = document.querySelector(".close");
 
-    // Listen for clicks on the entire gallery container
     gallery.addEventListener('click', (e) => {
-        // Only open lightbox if an image was actually clicked
         if (e.target.tagName === 'IMG') {
             modal.style.display = "flex";
             modal.style.justifyContent = "center";
@@ -43,19 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Close on 'X' click
     closeBtn.addEventListener('click', () => {
         modal.style.display = "none";
     });
 
-    // Close when clicking the dark background
     modal.addEventListener('click', (e) => {
         if (e.target !== modalImg) {
             modal.style.display = "none";
         }
     });
 
-    // Close on Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === "Escape" && modal.style.display === "flex") {
             modal.style.display = "none";
