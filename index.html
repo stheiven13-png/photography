@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suthan Theiven | Photography</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="top-app-bar">
+        <div class="logo">Suthan Theiven</div>
+        <nav>
+            <button class="icon-button" aria-label="Contact">
+                <span class="material-symbols-outlined">mail</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Exploring the world.</h1>
+        <p>A collection of 94 landscape & urban moments.</p>
+
+        <div class="chip-container">
+            <button class="chip active">All Photos</button>
+        </div>
+    </section>
+
+    <main class="gallery-grid" id="gallery"></main>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close material-symbols-outlined">close</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
