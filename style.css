@@ -14,11 +14,11 @@
     box-sizing: border-box;
 }
 
+/* Update or add this body rule at the top of your file */
 body {
-    background-color: var(--md-sys-color-background);
-    color: var(--md-sys-color-on-background);
-    font-family: 'Roboto', sans-serif;
-    -webkit-font-smoothing: antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* If you already had margin or background-color here, keep those! */
+    margin: 0;
 }
 
 /* Top App Bar */
