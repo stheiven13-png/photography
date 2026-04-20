@@ -5,35 +5,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. DYNAMICALLY GENERATE THE GALLERY (Auto-Detecting Images)
     function loadNextImage() {
-        // Create an image object in memory to test if the file exists
-        const testImg = new Image();
-        testImg.src = `images/photo (${currentIndex}).jpg`;
+        const extensions = ['.jpg', '.JPG'];
 
-        // If the image loads successfully, add it to the page
-        testImg.onload = () => {
-            const figure = document.createElement('figure');
-            figure.className = 'photo-card';
+        function tryLoad(extIndex) {
+            if (extIndex >= extensions.length) {
+                console.log(`Finished checking. Gallery loaded with ${currentIndex - 1} photos.`);
+                return;
+            }
 
-            if (currentIndex % 5 === 0) figure.classList.add('wide');
-            if (currentIndex % 7 === 0) figure.classList.add('tall');
+            // Create an image object in memory to test if the file exists
+            const testImg = new Image();
+            testImg.src = `images/photo (${currentIndex})${extensions[extIndex]}`;
 
-            const img = document.createElement('img');
-            img.src = testImg.src;
-            img.alt = `Suthan Theiven Photography - Capture ${currentIndex}`;
-            img.loading = 'lazy';
+            // If the image loads successfully, add it to the page
+            testImg.onload = () => {
+                const figure = document.createElement('figure');
+                figure.className = 'photo-card';
 
-            figure.appendChild(img);
-            gallery.appendChild(figure);
+                if (currentIndex % 5 === 0) figure.classList.add('wide');
+                if (currentIndex % 7 === 0) figure.classList.add('tall');
 
-            // Increment the counter and try to load the NEXT image
-            currentIndex++;
-            loadNextImage();
-        };
+                const img = document.createElement('img');
+                img.src = testImg.src;
+                img.alt = `Suthan Theiven Photography - Capture ${currentIndex}`;
+                img.loading = 'lazy';
 
-        // If the image fails to load (meaning the file doesn't exist), stop trying.
-        testImg.onerror = () => {
-            console.log(`Finished checking. Gallery loaded with ${currentIndex - 1} photos.`);
-        };
+                figure.appendChild(img);
+                gallery.appendChild(figure);
+
+                // Increment the counter and try to load the NEXT image
+                currentIndex++;
+                loadNextImage();
+            };
+
+            // If it fails, try the next extension. If no extensions left, we are done.
+            testImg.onerror = () => {
+                tryLoad(extIndex + 1);
+            };
+        }
+
+        tryLoad(0);
     }
 
     // Kick off the loading process
