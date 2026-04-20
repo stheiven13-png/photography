@@ -38,6 +38,7 @@ body {
     font-weight: 500;
     font-size: 1.25rem;
     letter-spacing: 0.5px;
+    color: white;
 }
 
 .icon-button {
@@ -114,6 +115,8 @@ body {
     padding: 16px 32px 60px;
     max-width: 1600px;
     margin: 0 auto;
+    background-color: #343d46;
+    border-radius: var(--border-radius-m);
 }
 
 /* Grid Spans for variety */
