@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function tryExt(extIndex) {
                 if (extIndex >= extensions.length) {
-                    // This index doesn't exist — we're done
+                    // Neither extension worked — we're done
                     allLoaded = true;
                     isLoading = false;
                     sentinelObserver.disconnect();
@@ -66,8 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         loadOne(currentIndex);
                     } else {
                         isLoading = false;
-                        // Re-observe sentinel in case it's still in view
+                        // Unobserve then re-observe to force a fresh intersection
+                        // check — needed when sentinel is already in the viewport
+                        sentinelObserver.unobserve(sentinel);
                         sentinelObserver.observe(sentinel);
+                        // Also trigger immediately if sentinel is still visible
+                        const rect = sentinel.getBoundingClientRect();
+                        if (rect.top < window.innerHeight + 400) {
+                            loadBatch();
+                        }
                     }
                 };
 
